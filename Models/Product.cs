@@ -21,6 +21,12 @@
         public string Type { get; set; }
 
         /// <summary>
+        /// What category the product is in (for the search function)
+        /// Different categories exist for each type of product
+        /// </summary>
+        public string Category { get; set; }
+
+        /// <summary>
         /// A brief description of the product
         /// </summary>
         public string Description { get; set; }
@@ -29,12 +35,6 @@
         /// The cost of the product
         /// </summary>
         public decimal Price { get; set; }
-
-        /// <summary>
-        /// What category the product is in (for the search function)
-        /// </summary>
-        public ProductCategory Category { get; set; }
-
     }
 
 
