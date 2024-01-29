@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace CuppaComfort.Models
 {
@@ -10,51 +12,65 @@ namespace CuppaComfort.Models
         /// <summary>
         /// The unique ID of the application
         /// </summary>
+        [Key]
         public int ApplicationId { get; set; }
 
         /// <summary>
         /// The unique ID of the user applying
         /// </summary>
+        [Required]
         public int UserId { get; set; }
 
         /// <summary>
         /// The applicant's preferred name
         /// </summary>
+        [Required]
+        [DisplayName("Preferred Name")]
         public string PreferredName { get; set; }
 
         /// <summary>
         /// The applicant's legal first name
         /// </summary>
+        [Required]
+        [DisplayName("First Name")]
         public string FirstName { get; set; }
 
         /// <summary>
         /// The applicant's legal last name
         /// </summary>
+        [Required]
+        [DisplayName("Last Name")]
         public string LastName { get; set; }
 
         /// <summary>
         /// The applicant's birthday
         /// </summary>
+        [Required]
         public DateTime Birthdate { get; set; }
 
         /// <summary>
         /// The applicant's email address
         /// </summary>
+        [Required]
         public string Email { get; set; }
 
         /// <summary>
         /// The applicant's phone number
         /// </summary>
+        [Required]
         public string Phone { get; set; }
 
         /// <summary>
         /// The position being applied for
         /// </summary>
+        [Required]
         public string Position { get; set; }
 
         /// <summary>
         /// The kind of employment being applied for (full-time, part-time, temporary)
         /// </summary>
+        [Required]
+        [DisplayName("Employment Type")]
         public string EmploymentType { get; set; }
 
         /// <summary>
@@ -65,6 +81,7 @@ namespace CuppaComfort.Models
         /// <summary>
         /// The review status of the application (pending, accepted, or rejected)
         /// </summary>
+        [Required]
         public string Status { get; set; }
     }
 }
