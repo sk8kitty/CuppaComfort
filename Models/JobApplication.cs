@@ -64,7 +64,8 @@ namespace CuppaComfort.Models
         /// The position being applied for
         /// </summary>
         [Required]
-        public string Position { get; set; }
+        [DisplayName("Position")]
+        public Position ChosenPosition { get; set; }
 
         /// <summary>
         /// The kind of employment being applied for (full-time, part-time, temporary)
