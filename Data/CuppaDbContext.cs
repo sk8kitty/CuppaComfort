@@ -16,5 +16,6 @@ namespace CuppaComfort.Data
         public DbSet<JobApplication> JobApplications { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Reward> Rewards { get; set; }
+        public DbSet<Position> Positions { get; set; }
     }
 }
