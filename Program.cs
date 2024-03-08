@@ -1,4 +1,5 @@
 using CuppaComfort.Data;
+using CuppaComfort.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<CuppaDbContext>(options => options.UseSqlServer(co
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
@@ -40,5 +42,14 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+// service provider setup
+IServiceScope provider = app.Services.GetRequiredService<IServiceProvider>().CreateScope();
+
+// create default roles
+await IdentityHelper.CreateRoles(provider.ServiceProvider, IdentityHelper.Admin, IdentityHelper.User);
+
+// create default admin
+await IdentityHelper.CreateDefaultAdmin(provider.ServiceProvider, IdentityHelper.Admin);
 
 app.Run();
