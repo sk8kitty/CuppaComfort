@@ -1,4 +1,5 @@
 using CuppaComfort.Data;
+using CuppaComfort.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,5 +42,14 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+// service provider setup
+IServiceScope provider = app.Services.GetRequiredService<IServiceProvider>().CreateScope();
+
+// create default roles
+await IdentityHelper.CreateRoles(provider.ServiceProvider, IdentityHelper.Admin, IdentityHelper.User);
+
+// create default admin
+await IdentityHelper.CreateDefaultAdmin(provider.ServiceProvider, IdentityHelper.Admin);
 
 app.Run();
