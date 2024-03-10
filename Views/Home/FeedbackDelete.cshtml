@@ -1,0 +1,21 @@
+﻿@model Feedback
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+
+<h2 class="text-center">Delete Feedback</h2>
+<p class="text-center">Are you sure? You won't be able to undo this action.'</p>
+
+<div class="card text-center">
+    <div class="card-body">
+        <p class="card-text">@($"★ {Model.Rating} out of 5 stars")</p>
+        <p class="card-text">@Model.Content</p>
+        <!-- getting UserName (email) from UserId -->
+        <p class="card-text text-muted">@await UserManager.GetUserNameAsync(UserManager.Users.FirstOrDefault(u => u.Id == Model.UserId))</p>
+        <p class="card-text text-muted">@Model.UserId</p>
+    </div>
+</div>
+<br />
+
+<form asp-action="FeedbackDelete" asp-route-id="@Model.FeedbackId" method="post" class="form-group text-center">
+    <button type="submit" class="btn btn-danger" style="font-size: large">Delete</button>
+</form>
