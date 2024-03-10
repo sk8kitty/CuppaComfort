@@ -102,11 +102,11 @@ namespace CuppaComfort.Controllers
                 await _cuppaContext.SaveChangesAsync();
 
                 TempData["Message"] = "Feedback was deleted successfully!";
-                return RedirectToAction("Index");
+                return RedirectToAction("Feedback");
             }
 
             TempData["Message"] = "This feedback was already deleted.";
-            return RedirectToAction("Index");
+            return RedirectToAction("Feedback");
         }
 
 
