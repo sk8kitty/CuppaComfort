@@ -1,0 +1,60 @@
+﻿@model List<Feedback>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+
+<h1>Feedback</h1>
+
+@if (User.IsInRole("admin"))
+{
+    <p>Select only positive reviews to display on the home page.</p>
+}
+else
+{
+    <p>Cuppa Comfort values customer opinions. Thank you for your contributions!</p>
+
+    <a id="toggleFeedbackForm" class="btn btn-primary">Create Feedback</a>
+
+    <div id="feedbackFormContainer" style="display: none;">
+        <!-- getting partial view for feedback form -->
+    @await Html.PartialAsync("_FeedbackCreateForm",new Feedback())
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <br />
+}
+
+<br />
+@foreach (var feedback in Model)
+{
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text">@($"★ {feedback.Rating} out of 5 stars")</p>
+            <p class="card-text">@feedback.Content</p>
+            <!-- getting UserName (email) from UserId -->
+            <p class="card-text text-muted">@await UserManager.GetUserNameAsync(UserManager.Users.FirstOrDefault(u => u.Id == feedback.UserId))</p>
+
+            @if (User.IsInRole("admin"))
+            {
+                <div class="float-right">
+                    <form asp-action="FeedbackDisplay" asp-route-id="@feedback.FeedbackId" method="post" style="display: inline">
+                        <button type="submit" class="btn btn-primary">@(feedback.DisplayApproved ? "Remove from Homepage" : "Add to Homepage")</button>
+                    </form>
+                    <a asp-action="FeedbackDelete" asp-route-id="@feedback.FeedbackId" class="btn btn-danger" style="display: inline">Delete</a>
+                </div>                
+            }
+        </div>
+    </div>
+}
+
+<script>
+    document.getElementById('toggleFeedbackForm').addEventListener('click', function () {
+        var formContainer = document.getElementById('feedbackFormContainer');
+        formContainer.style.display = (formContainer.style.display === 'none' || formContainer.style.display === '') ? 'block' : 'none';
+    });
+</script>
