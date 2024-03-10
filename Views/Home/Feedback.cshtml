@@ -41,6 +41,8 @@ else
 
             @if (User.IsInRole("admin"))
             {
+                <p class="card-text text-muted">@feedback.UserId</p>
+
                 <div class="float-right">
                     <form asp-action="FeedbackDisplay" asp-route-id="@feedback.FeedbackId" method="post" style="display: inline">
                         <button type="submit" class="btn btn-primary">@(feedback.DisplayApproved ? "Remove from Homepage" : "Add to Homepage")</button>
