@@ -198,7 +198,7 @@ namespace CuppaComfort.Controllers
 
             if (positionToDelete != null)
             {
-                _cuppaContext.Positions.Remove(p);
+                _cuppaContext.Positions.Remove(positionToDelete);
                 await _cuppaContext.SaveChangesAsync();
 
                 TempData["Message"] = "Position was deleted successfully!";
