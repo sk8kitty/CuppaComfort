@@ -2,8 +2,12 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<IdentityUser> UserManager
 
-<h2 class="text-center">Delete Feedback</h2>
-<p class="text-center">Are you sure? You won't be able to undo this action.'</p>
+@{
+    ViewBag.Title = "Delete Feedback";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<p class="text-center">Are you sure? You won't be able to undo this action.</p>
 
 <div class="card text-center">
     <div class="card-body">
