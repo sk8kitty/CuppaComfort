@@ -112,6 +112,114 @@ namespace CuppaComfort.Controllers
 
 
 
+        public IActionResult Careers()
+        {
+            List<Position> positions = _cuppaContext.Positions.ToList();
+            return View(positions);
+        }
+
+
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        public IActionResult PositionCreate() 
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public async Task<IActionResult> PositionCreate(Position p)
+        {
+            p.IsOpen = true; 
+
+            if (ModelState.IsValid)
+            {
+                _cuppaContext.Positions.Add(p);
+                await _cuppaContext.SaveChangesAsync();
+
+                TempData["Message"] = $"{p.Title} has been added!";
+                return RedirectToAction("Careers");
+            }
+
+            return View(p);
+        }
+
+
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        public async Task<IActionResult> PositionEdit(int id)
+        {
+            Position? positionToEdit = await _cuppaContext.Positions.FindAsync(id);
+
+            if (positionToEdit == null)
+            {
+                return NotFound();
+            }
+
+            return View(positionToEdit);
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public async Task<IActionResult> PositionEdit(Position p)
+        {
+            if (ModelState.IsValid)
+            {
+                _cuppaContext.Positions.Update(p);
+                await _cuppaContext.SaveChangesAsync();
+
+                TempData["Message"] = $"'{p.Title}' has been updated!";
+                return RedirectToAction("Careers");
+            }
+
+            return View(p);
+        }
+
+
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        public async Task<IActionResult> PositionDelete(int id)
+        {
+            Position? positionToDelete = await _cuppaContext.Positions.FindAsync(id);
+
+            if (positionToDelete == null)
+            {
+                return NotFound();
+            }
+
+            return View(positionToDelete);
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost, ActionName("PositionDelete")]
+        public async Task<IActionResult> PositionDeleteConfirmed(int id)
+        {
+            Position? positionToDelete = await _cuppaContext.Positions.FindAsync(id);
+
+            if (positionToDelete != null)
+            {
+                _cuppaContext.Positions.Remove(p);
+                await _cuppaContext.SaveChangesAsync();
+
+                TempData["Message"] = "Position was deleted successfully!";
+                return RedirectToAction("Careers");
+            }
+
+            TempData["Message"] = "This position was already deleted.";
+            return RedirectToAction("Careers");
+        }
+
+
+        public IActionResult JobApplications()
+        {
+            return View();
+        }
+
+
+
+
+
+
         public IActionResult Privacy()
         {
             return View();
