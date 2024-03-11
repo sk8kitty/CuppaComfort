@@ -137,7 +137,7 @@ namespace CuppaComfort.Controllers
                 _cuppaContext.Positions.Add(p);
                 await _cuppaContext.SaveChangesAsync();
 
-                TempData["Message"] = $"{p.Title} has been added!";
+                TempData["Message"] = $"'{p.Title}' has been added!";
                 return RedirectToAction("Careers");
             }
 
