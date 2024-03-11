@@ -20,6 +20,29 @@ namespace CuppaComfort.Models
         public string Title { get; set; }
 
         /// <summary>
+        /// The job description
+        /// </summary>
+        [Required]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// The prerequisites of the job
+        /// </summary>
+        [Required]
+        public string Prerequisites { get; set; }
+
+        /// <summary>
+        /// The benefits of the job
+        /// </summary>
+        public string Benefits { get; set; }
+
+        /// <summary>
+        /// The job's pay per hour
+        /// </summary>
+        [Required]
+        public decimal Pay { get; set; }
+
+        /// <summary>
         /// Whether or not the position needs a hire
         /// </summary>
         [Required]
