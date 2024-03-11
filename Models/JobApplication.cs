@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CuppaComfort.Models
 {
@@ -19,7 +20,7 @@ namespace CuppaComfort.Models
         /// The unique ID of the user applying
         /// </summary>
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         /// <summary>
         /// The applicant's preferred name
@@ -68,16 +69,18 @@ namespace CuppaComfort.Models
         public Position ChosenPosition { get; set; }
 
         /// <summary>
-        /// The kind of employment being applied for (full-time, part-time, temporary)
-        /// </summary>
-        [Required]
-        [DisplayName("Employment Type")]
-        public string EmploymentType { get; set; }
-
-        /// <summary>
         /// The filepath of the user's uploaded resume
         /// </summary>
-        public string ResumeFilepath { get; set; }
+        [AllowNull]
+        [DisplayName("Resume")]
+        public string? ResumeFilepath { get; set; }
+
+        /// <summary>
+        /// The date that the application was submitted on
+        /// </summary>
+        [Required]
+        [DisplayName("Submission Date")]
+        public DateTime SubmissionDate { get; set; }
 
         /// <summary>
         /// The review status of the application (pending, accepted, or rejected)

@@ -1,0 +1,40 @@
+﻿@model Position
+
+@{
+    ViewBag.Title = $"Delete Position";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<p class="text-center">Are you sure? You won't be able to undo this action.</p>
+
+<div class="row d-flex align-items-center" style="background-color: #f0f0f0; padding: 20px; max-width: 800px; margin: auto">
+    <div>
+        <h4 class="text-center">@Model.Title</h4>
+        <p class="text-center"><strong>$@Model.Pay / hr</strong></p>
+        <br />
+
+        <p><strong>Description</strong></p>
+        <p>@Model.Description</p>
+
+        <p><strong>Prerequisites</strong></p>
+        <p>@Model.Prerequisites</p>
+
+        <p><strong>Benefits</strong></p>
+        <p>@Model.Benefits</p>
+
+        <p><strong>Status</strong></p>
+        @if (Model.IsOpen == true)
+        {
+            <p>Open</p>
+        }
+        else
+        {
+            <p>Closed</p>
+        }
+    </div>
+</div>
+<br />
+
+<form asp-action="PositionDelete" asp-route-id="@Model.PositionId" method="post" class="form-group text-center">
+    <button type="submit" class="btn btn-danger" style="font-size: large">Delete</button>
+</form>

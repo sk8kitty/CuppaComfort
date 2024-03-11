@@ -16,7 +16,7 @@ else
 
     <div id="feedbackFormContainer" style="display: none;">
         <!-- getting partial view for feedback form -->
-    @await Html.PartialAsync("_FeedbackCreateForm",new Feedback())
+        @await Html.PartialAsync("_FeedbackCreateForm",new Feedback())
     </div>
 
     @if (TempData["Message"] != null)
@@ -54,9 +54,11 @@ else
     </div>
 }
 
-<script>
-    document.getElementById('toggleFeedbackForm').addEventListener('click', function () {
-        var formContainer = document.getElementById('feedbackFormContainer');
-        formContainer.style.display = (formContainer.style.display === 'none' || formContainer.style.display === '') ? 'block' : 'none';
-    });
-</script>
+@section Scripts {
+    <script>
+        document.getElementById('toggleFeedbackForm').addEventListener('click', function () {
+            var formContainer = document.getElementById('feedbackFormContainer');
+            formContainer.style.display = (formContainer.style.display === 'none' || formContainer.style.display === '') ? 'block' : 'none';
+        });
+    </script>
+}

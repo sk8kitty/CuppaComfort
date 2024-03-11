@@ -16,3 +16,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.visible {
+    display: block !important;
+}
+
+.hidden {
+    display: none !important;
+}

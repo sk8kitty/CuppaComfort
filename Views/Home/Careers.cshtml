@@ -1,0 +1,100 @@
+﻿@model List<Position>
+
+@{
+    ViewBag.Title = "Careers";
+}
+
+<h3 class="text-center">@ViewBag.Title</h3>
+<p class="text-center">Explore exciting career opportunities at Cuppa Comfort.</p>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="text-center mt-4">
+    @if (User.IsInRole("admin"))
+    {
+        <a asp-action="PositionCreate" class="btn btn-primary">Create Position</a>
+    }
+    else
+    {
+        <a asp-action="JobApplications" class="btn btn-primary">Apply Now</a>
+    }
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <label for="positionFilter" class="form-label" style="font-weight: bold;">Filter:</label>
+        <select id="positionFilter" class="form-select" onchange="filterPositions()">
+            <option value="AllPositions">All Positions</option>
+            <option value="OpenPositions">Open Positions</option>
+            <option value="ClosedPositions">Closed Positions</option>
+        </select>
+    </div>
+</div>
+
+<div id="positionList" class="mt-4">
+    @foreach (var position in Model)
+    {
+        <div class="row d-flex align-items-center mt-4 position" style="background-color: #f0f0f0; padding: 20px;" data-isopen="@position.IsOpen.ToString().ToLower()">
+            <div>
+                <h4>@position.Title <span style="color: darkblue; font-size: small;">@(position.IsOpen ? "- JOB OPEN NOW!" : "")</span></h4>
+                <p><strong>$@position.Pay / hr</strong></p>
+
+                <a class="position-toggler btn btn-primary" data-bs-toggle="collapse" href="#positionDetails_@position.PositionId" role="button" aria-expanded="false" aria-controls="positionDetails_@position.PositionId">
+                    Show Details
+                </a>
+                @if (User.IsInRole("admin"))
+                {
+                    <a asp-action="PositionEdit" asp-route-id="@position.PositionId" class="btn btn-success" style="display: inline">Edit</a>
+                    <a asp-action="PositionDelete" asp-route-id="@position.PositionId" class="btn btn-danger" style="display: inline">Delete</a>
+                }
+
+                <div class="collapse position-details" id="positionDetails_@position.PositionId">
+                    <br />
+                    <p><strong>Description</strong></p>
+                    <p>@position.Description</p>
+
+                    <p><strong>Prerequisites</strong></p>
+                    <p>@position.Prerequisites</p>
+
+                    <p><strong>Benefits</strong></p>
+                    <p>@position.Benefits</p>
+                </div>                
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function filterPositions() {
+            // GET CHOSEN FILTER
+            var filterValue = document.getElementById('positionFilter').value;
+
+            // GET ELEMENTS USED TO FILTER
+            var positionList = document.getElementById('positionList');
+            var positionDivs = positionList.children;
+
+            // LOOP TO CHECK EVERY POSITION
+            for (var i = 0; i < positionDivs.length; i++) {
+                var positionDiv = positionDivs[i];
+                var isOpen = positionDiv.getAttribute('data-isopen');
+
+                positionDiv.classList.add('hidden'); // HIDDEN BY DEFAULT
+
+                // DISPLAY CONDITION
+                if ((filterValue === 'AllPositions') ||
+                    (filterValue === 'OpenPositions' && isOpen === 'true') ||
+                    (filterValue === 'ClosedPositions' && isOpen === 'false')) {
+                    positionDiv.classList.remove('hidden');
+                    positionDiv.classList.add('visible');
+                }
+            }
+        }
+    </script>
+}

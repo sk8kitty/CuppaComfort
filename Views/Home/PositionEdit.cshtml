@@ -1,0 +1,67 @@
+﻿@model Position
+
+@{
+    ViewBag.Title = $"Update '{Model.Title}' Position";
+}
+
+<div class="container mt-4">
+    <h2 style="text-align: center">@ViewBag.Title</h2>
+
+    <div class="card p-3 shadow" style="max-width: 500px; margin: auto;">
+        <form asp-action="PositionEdit" method="post">
+            <input type="hidden" asp-for="PositionId" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"><strong>Title</strong></label>
+                <span asp-validation-for="Title" class="text-danger"></span>
+                <input asp-for="Title" class="form-control" placeholder="Barista" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Pay"><strong>Pay</strong></label>
+                <span asp-validation-for="Pay" class="text-danger"></span>
+                <input asp-for="Pay" class="form-control" type="number" min="16.28" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"><strong>Description</strong></label>
+                <span asp-validation-for="Description" class="text-danger"></span>
+                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Baristas take orders..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Prerequisites" class="control-label"><strong>Prerequisites</strong></label>
+                <span asp-validation-for="Prerequisites" class="text-danger"></span>
+                <textarea asp-for="Prerequisites" class="form-control" rows="4" placeholder="High school diploma..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Benefits" class="control-label"><strong>Benefits</strong></label>
+                <span asp-validation-for="Benefits" class="text-danger"></span>
+                <textarea asp-for="Benefits" class="form-control" rows="4" placeholder="Medical insurance..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IsOpen" class="control-label"><strong>Status</strong></label>
+                <span asp-validation-for="IsOpen" class="text-danger"></span>
+                <select asp-for="IsOpen" class="form-control">
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+            <br />
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a asp-action="Careers" class="btn btn-secondary">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
