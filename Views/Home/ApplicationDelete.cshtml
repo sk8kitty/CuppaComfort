@@ -1,0 +1,73 @@
+﻿@model JobApplication
+@using System.Diagnostics
+
+@{
+    ViewBag.Title = $"Delete Application";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<p class="text-center">Are you sure? You won't be able to undo this action.</p>
+
+<div class="card p-4 shadow col-md-6 offset-md-3">
+    <div class="form-group mb-2">
+        <label><strong>Preferred Name:</strong></label>
+        <p>@Model.PreferredName</p>
+    </div>
+
+    <div class="form-group mb-2">
+        <label><strong>First Name:</strong></label>
+        <p>@Model.FirstName</p>
+    </div>
+
+    <div class="form-group mb-2">
+        <label><strong>Last Name:</strong></label>
+        <p>@Model.LastName</p>
+    </div>
+
+    <div class="form-group mb-2">
+        <label><strong>Birthdate:</strong></label>
+        <p>@Model.Birthdate.ToShortDateString()</p>
+    </div>
+
+    <div class="form-group mb-2">
+        <label><strong>Email:</strong></label>
+        <p>@Model.Email</p>
+    </div>
+
+    <div class="form-group mb-2">
+        <label><strong>Phone:</strong></label>
+        <p>@Model.Phone</p>
+    </div>
+
+    <div class="form-group mb-2">
+        <label><strong>Position:</strong></label>
+        @{
+            var positionId = Model.ChosenPosition?.PositionId ?? 0;
+
+            var openPositions = ((List<Position>)ViewBag.OpenPositions) ?? new List<Position>();
+
+            var positionTitle = openPositions.FirstOrDefault(p => p.PositionId == (int)positionId)?.Title ?? "No position selected";
+        }
+        <p>@(positionTitle ?? "No position selected.")</p>
+    </div>
+
+    <div class="form-group mb-2">
+        <label><strong>Resume (Optional):</strong></label>
+        @if (!string.IsNullOrEmpty(Model.ResumeFilepath))
+        {
+            <div>
+                <a asp-action="DownloadResume" asp-route-resumePath="@Model.ResumeFilepath" class="btn btn-secondary">Download User-Uploaded Resume</a>
+            </div>
+        }
+        else
+        {
+            <p>No resume uploaded by user.</p>
+        }
+    </div>
+</div>
+<br />
+
+
+<form asp-action="ApplicationDelete" asp-route-id="@Model.ApplicationId" method="post" class="form-group text-center">
+    <button type="submit" class="btn btn-danger" style="font-size: large">Delete</button>
+</form>
