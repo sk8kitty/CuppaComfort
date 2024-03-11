@@ -1,0 +1,78 @@
+﻿@model List<JobApplication>
+
+@{
+    ViewBag.Title = "Careers";
+}
+
+<h3 class="text-center">@ViewBag.Title</h3>
+
+
+@if (User.IsInRole("admin"))
+{
+    <p class="text-center">As an administrator, you're tasked with reviewing job applications. We know it can be tedious, but being thorough and considerate is very important. Keep in mind that Cuppa Comfort values more than just technical skills and past experience; a warm, collaborative spirit is what makes us unique and it's important for our employees to align with this ethos.</p>
+}
+else
+{
+    <p class="text-center">Welcome to your application center! From here, you can create a new application by clicking the button below or you can review your previous applications.</p>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <br />
+    }
+
+    <h4>Recent Applications</h4>
+
+    <div class="text-center mt-4">
+        <a id="toggleApplicationForm" class="btn btn-primary">Create Application</a>
+    </div>
+
+    <div id="applicationFormContainer" style="display: none;">
+        <!-- getting partial view for job application form -->
+        @await Html.PartialAsync("_ApplicationCreateForm",new JobApplication())
+    </div>
+    <br />
+
+    <h4>Previous Applications</h4>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Unique ID</th>
+            <th>Date</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var app in Model)
+        {
+            <tr>
+                <td>@app.ApplicationId</td>
+                <td>@app.SubmissionDate.ToString("MMMM dd, yyyy, h:mm tt")</td>
+                <td>@app.ChosenPosition.Title</td>
+                <td>@app.Status</td>
+                <td>
+                    <a asp-action="ApplicationDetails" asp-route-id="@app.ApplicationId" class="btn btn-primary">Details</a>
+                    <a asp-action="ApplicationDelete" asp-route-id="@app.ApplicationId" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@section Scripts {
+    <script>
+        document.getElementById('toggleApplicationForm').addEventListener('click', function () {
+            var formContainer = document.getElementById('applicationFormContainer');
+            formContainer.style.display = (formContainer.style.display === 'none' || formContainer.style.display === '') ? 'block' : 'none';
+        });
+    </script>
+}

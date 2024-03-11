@@ -1,0 +1,65 @@
+﻿@model JobApplication
+
+<br />
+<div class="card p-4 shadow col-md-6 offset-md-3">
+    <form asp-action="ApplicationCreate" method="post" enctype="multipart/form-data">
+        <div class="form-group mb-2">
+            <label asp-for="PreferredName"><strong>Preferred Name:</strong></label>
+            <input asp-for="PreferredName" class="form-control" />
+            <span asp-validation-for="PreferredName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <label asp-for="FirstName"><strong>First Name:</strong></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <label asp-for="LastName"><strong>Last Name:</strong></label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <label asp-for="Birthdate"><strong>Birthdate:</strong></label>
+            <input asp-for="Birthdate" class="form-control" type="date" />
+            <span asp-validation-for="Birthdate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <label asp-for="Email"><strong>Email:</strong></label>
+            <input asp-for="Email" class="form-control" type="email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <label asp-for="Phone"><strong>Phone:</strong></label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <label asp-for="ChosenPosition"><strong>Position:</strong></label>
+            <select asp-for="ChosenPosition.PositionId" class="form-control">
+                <option value="">Select a Position</option>
+                @foreach (var openPosition in ViewBag.OpenPositions)
+                {
+                    <option value="@openPosition.PositionId">@openPosition.Title</option>
+                }
+            </select>
+            <span asp-validation-for="ChosenPosition.PositionId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <label asp-for="ResumeFilepath"><strong>Resume (Optional):</strong></label>
+            <input asp-for="ResumeFilepath" type="file" class="form-control" />
+            <span asp-validation-for="ResumeFilepath" class="text-danger"></span>
+        </div>
+        <br />
+
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </form>
+</div>
