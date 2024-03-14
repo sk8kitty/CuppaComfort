@@ -48,7 +48,7 @@
         @if (!string.IsNullOrEmpty(Model.ResumeFilepath))
         {
             <div>
-                <a asp-action="DownloadResume" asp-route-resumePath="@Model.ResumeFilepath" class="btn btn-secondary">Download User-Uploaded Resume</a>
+                <a href="@Url.Action("DownloadResume", "HomeController", new { resumePath = Model.ResumeFilepath })" class="btn btn-secondary">Download User-Uploaded Resume</a>
             </div>
         }
         else
@@ -59,7 +59,12 @@
 
     @if (User.IsInRole("admin"))
     {
-        <button type="button" class="btn btn-success">Accept</button>
-        <button type="button" class="btn btn-danger">Reject</button>
+        <form asp-action="ApplicationAccept" asp-route-id="@Model.ApplicationId" method="post" class="form-group text-center">
+            <button type="submit" class="btn btn-success" style="font-size: large">Accept</button>
+        </form>
+
+        <form asp-action="ApplicationReject" asp-route-id="@Model.ApplicationId" method="post" class="form-group text-center">
+            <button type="submit" class="btn btn-danger" style="font-size: large">Reject</button>
+        </form>
     }
 </div>

@@ -9,7 +9,10 @@
 
 @if (User.IsInRole("admin"))
 {
-    <p class="text-center">As an administrator, you're tasked with reviewing job applications. We know it can be tedious, but being thorough and considerate is very important. Keep in mind that Cuppa Comfort values more than just technical skills and past experience; a warm, collaborative spirit is what makes us unique and it's important for our employees to align with this ethos.</p>
+    <p class="text-center">As an administrator, you're tasked with reviewing job applications. We know it can be tedious, but being thorough and considerate is very important. Keep in mind that Cuppa Comfort values more than just technical skills and past experience; a warm, collaborative spirit is what makes our company, and it's important for our employees to have that trait.</p>
+    <hr />
+
+    <h4 class="text-center">Recent Applications</h4>
 }
 else
 {
@@ -24,8 +27,6 @@ else
         <br />
     }
 
-    <h4>Recent Applications</h4>
-
     <div class="text-center mt-4">
         <a id="toggleApplicationForm" class="btn btn-primary">Create Application</a>
     </div>
@@ -34,6 +35,7 @@ else
         <!-- getting partial view for job application form -->
         @await Html.PartialAsync("_ApplicationCreateForm",new JobApplication())
     </div>
+    <hr />
     <br />
 
     <h4>Previous Applications</h4>
@@ -56,7 +58,18 @@ else
                 <td>@app.ApplicationId</td>
                 <td>@app.SubmissionDate.ToString("MMMM dd, yyyy, h:mm tt")</td>
                 <td>@app.ChosenPosition.Title</td>
-                <td>@app.Status</td>
+                @if (app.Status == "Pending")
+                {
+                    <td><span class="badge bg-info"><small>@app.Status</small></span</td>
+                }
+                else if (app.Status == "Accepted")
+                {
+                    <td><span class="badge bg-success"><small>@app.Status</small></span</td>
+                }
+                else
+                {
+                    <td><span class="badge bg-secondary"><small>@app.Status</small></span</td>
+                }
                 <td>
                     <a asp-action="ApplicationDetails" asp-route-id="@app.ApplicationId" class="btn btn-primary">Details</a>
                     <a asp-action="ApplicationDelete" asp-route-id="@app.ApplicationId" class="btn btn-danger">Delete</a>
@@ -75,4 +88,8 @@ else
             formContainer.style.display = (formContainer.style.display === 'none' || formContainer.style.display === '') ? 'block' : 'none';
         });
     </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
