@@ -3,11 +3,10 @@ using CuppaComfort.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Diagnostics;
 using System.Security.Claims;
-using static System.Net.Mime.MediaTypeNames;
+using Microsoft.AspNetCore.Hosting;
 
 namespace CuppaComfort.Controllers
 {
@@ -17,18 +16,21 @@ namespace CuppaComfort.Controllers
         private readonly ApplicationDbContext _identityContext;
         private readonly CuppaDbContext _cuppaContext;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext identityContext, CuppaDbContext cuppaContext, UserManager<IdentityUser> userManager)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext identityContext, CuppaDbContext cuppaContext, UserManager<IdentityUser> userManager, IWebHostEnvironment hostingEnvironment)
         {
             _logger = logger;
             _identityContext = identityContext;
             _cuppaContext = cuppaContext;
             _userManager = userManager;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IActionResult Index()
         {
-            return View();
+            List<Feedback> feedbacks = _cuppaContext.Feedbacks.Where(f => f.DisplayApproved).ToList();
+            return View(feedbacks);
         }
 
 
@@ -210,6 +212,10 @@ namespace CuppaComfort.Controllers
             return RedirectToAction("Careers");
         }
 
+
+
+
+
         [Authorize]
         public IActionResult JobApplications()
         {
@@ -235,7 +241,7 @@ namespace CuppaComfort.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> ApplicationCreate(JobApplication j)
+        public async Task<IActionResult> ApplicationCreate(JobApplication j, IFormFile resumeFile)
         {
             j.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             j.ChosenPosition = _cuppaContext.Positions.SingleOrDefault(p => p.PositionId == j.ChosenPosition.PositionId);
@@ -265,7 +271,6 @@ namespace CuppaComfort.Controllers
             return View(appDetails);
         }
 
-
         [HttpGet]
         public async Task<IActionResult> ApplicationDelete(int id)
         {
@@ -282,7 +287,6 @@ namespace CuppaComfort.Controllers
             return View(appToDelete);
         }
 
-        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task <IActionResult> ApplicationDeleteConfirmed(int id)
         {
@@ -298,6 +302,44 @@ namespace CuppaComfort.Controllers
             }
 
             TempData["Message"] = "This application was already deleted.";
+            return RedirectToAction("JobApplications");
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public async Task <IActionResult> ApplicationReject(int id)
+        {
+            JobApplication? appToReject = await _cuppaContext.JobApplications.FindAsync(id);
+
+            if (appToReject == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                appToReject.Status = "Rejected";
+                await _cuppaContext.SaveChangesAsync();
+            }
+
+            return RedirectToAction("JobApplications");
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public async Task <IActionResult> ApplicationAccept(int id)
+        {
+            JobApplication? appToAccept = await _cuppaContext.JobApplications.FindAsync(id);
+
+            if (appToAccept == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                appToAccept.Status = "Accepted";
+                await _cuppaContext.SaveChangesAsync();
+            }
+
             return RedirectToAction("JobApplications");
         }
 
