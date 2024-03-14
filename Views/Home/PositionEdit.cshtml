@@ -1,11 +1,11 @@
 ﻿@model Position
 
 @{
-    ViewBag.Title = $"Update '{Model.Title}' Position";
+    ViewBag.Title = $"Update Position";
 }
 
 <div class="container mt-4">
-    <h2 style="text-align: center">@ViewBag.Title</h2>
+    <h2 style="text-align: center"></h2>
 
     <div class="card p-3 shadow" style="max-width: 500px; margin: auto;">
         <form asp-action="PositionEdit" method="post">
@@ -46,8 +46,8 @@
                 <label asp-for="IsOpen" class="control-label"><strong>Status</strong></label>
                 <span asp-validation-for="IsOpen" class="text-danger"></span>
                 <select asp-for="IsOpen" class="form-control">
-                    <option value="true">True</option>
-                    <option value="false">False</option>
+                    <option value="true">Open</option>
+                    <option value="false">Closed</option>
                 </select>
             </div>
             <br />

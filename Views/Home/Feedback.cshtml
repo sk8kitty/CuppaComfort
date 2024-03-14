@@ -18,21 +18,20 @@ else
         <!-- getting partial view for feedback form -->
         @await Html.PartialAsync("_FeedbackCreateForm",new Feedback())
     </div>
+}
 
-    @if (TempData["Message"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["Message"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-    <br />
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 }
 
 <br />
 @foreach (var feedback in Model)
 {
-    <div class="card">
+    <div class="card col ">
         <div class="card-body">
             <p class="card-text">@($"★ {feedback.Rating} out of 5 stars")</p>
             <p class="card-text">@feedback.Content</p>
@@ -61,4 +60,8 @@ else
             formContainer.style.display = (formContainer.style.display === 'none' || formContainer.style.display === '') ? 'block' : 'none';
         });
     </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
