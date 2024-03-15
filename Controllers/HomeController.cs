@@ -7,6 +7,12 @@ using System.Data;
 using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Hosting;
+using Humanizer;
+using static Humanizer.In;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Net.Mime.MediaTypeNames;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CuppaComfort.Controllers
 {
@@ -16,15 +22,15 @@ namespace CuppaComfort.Controllers
         private readonly ApplicationDbContext _identityContext;
         private readonly CuppaDbContext _cuppaContext;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly IEmailProvider _emailProvider;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext identityContext, CuppaDbContext cuppaContext, UserManager<IdentityUser> userManager, IWebHostEnvironment hostingEnvironment)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext identityContext, CuppaDbContext cuppaContext, UserManager<IdentityUser> userManager, IEmailProvider emailProvider)
         {
             _logger = logger;
             _identityContext = identityContext;
             _cuppaContext = cuppaContext;
             _userManager = userManager;
-            _hostingEnvironment = hostingEnvironment;
+            _emailProvider = emailProvider;
         }
 
         public IActionResult Index()
@@ -305,12 +311,13 @@ namespace CuppaComfort.Controllers
             return RedirectToAction("JobApplications");
         }
 
+
         [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task <IActionResult> ApplicationReject(int id)
         {
             JobApplication? appToReject = await _cuppaContext.JobApplications.FindAsync(id);
-
+            
             if (appToReject == null)
             {
                 return NotFound();
@@ -319,6 +326,10 @@ namespace CuppaComfort.Controllers
             {
                 appToReject.Status = "Rejected";
                 await _cuppaContext.SaveChangesAsync();
+
+                await _emailProvider.SendEmailAsync(appToReject.Email, "Application Status Update", 
+                    "Regretfully, your application at Cuppa Comfort has been rejected. We appreciate your time, but have decided to consider other applicants. Thank you!", 
+                    "Regretfully, your application at Cuppa Comfort has been <strong>rejected</strong>. We appreciate your time, but have decided to consider other applicants. <strong>Thank you!</strong>");
             }
 
             return RedirectToAction("JobApplications");
@@ -338,6 +349,11 @@ namespace CuppaComfort.Controllers
             {
                 appToAccept.Status = "Accepted";
                 await _cuppaContext.SaveChangesAsync();
+
+                await _emailProvider.SendEmailAsync(appToAccept.Email, "Application Status Update",
+                    "Good news, your application at Cuppa Comfort has been accepted! We appreciate your time and are looking forward to scheduling an interview with you. Look out for an email from our hiring team within the next 48 hours. Thank you!",
+                    "Good news, your application at Cuppa Comfort has been <strong>accepted</strong>! We appreciate your time and are looking forward to scheduling an interview with you. Look out for an email from our hiring team within the next 48 hours. <strong>Thank you!</strong>");
+
             }
 
             return RedirectToAction("JobApplications");
