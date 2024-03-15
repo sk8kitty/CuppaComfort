@@ -60,15 +60,15 @@ else
                 <td>@app.ChosenPosition.Title</td>
                 @if (app.Status == "Pending")
                 {
-                    <td><span class="badge bg-info"><small>@app.Status</small></span</td>
+                    <td><span class="badge bg-info"><small>@app.Status</small></span></td>
                 }
                 else if (app.Status == "Accepted")
                 {
-                    <td><span class="badge bg-success"><small>@app.Status</small></span</td>
+                    <td><span class="badge bg-success"><small>@app.Status</small></span></td>
                 }
                 else
                 {
-                    <td><span class="badge bg-secondary"><small>@app.Status</small></span</td>
+                    <td><span class="badge bg-secondary"><small>@app.Status</small></span></td>
                 }
                 <td>
                     <a asp-action="ApplicationDetails" asp-route-id="@app.ApplicationId" class="btn btn-primary">Details</a>
