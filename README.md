@@ -44,9 +44,13 @@ $${\color{lightgreen}Any \space contributions \space to \space or \space discuss
 ## Developer News
 ### 1/28:
 All of the models are complete, and the database has been set up.
+<br />
+
 
 ### 3/14:
-Feedback, position, and application views and functionality are all complete (with the exception of resume uploading). Code cleanup needs to happen still.
+Feedback, position, and application views and functionality are all complete (with the exception of resume uploading).   
+Automated emails are sent to users when their job applications have a status update.
+<br />
 
-$${\color{orange}Frontend \space work \space is \space commencing.}$$
+$${\color{orange}More \space frontend \space work \space is \space commencing.}$$
 <br />
