@@ -44,5 +44,9 @@ $${\color{lightgreen}Any \space contributions \space to \space or \space discuss
 ## Developer News
 ### 1/28:
 All of the models are complete, and the database has been set up.
+
+### 3/14:
+Feedback, position, and application views and functionality are all complete (with the exception of resume uploading). Code cleanup needs to happen still.
+
 $${\color{orange}Frontend \space work \space is \space commencing.}$$
 <br />
